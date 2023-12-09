@@ -1,17 +1,24 @@
-import 'package:app/ui/explore_page.dart';
-import 'package:app/ui/home_page.dart';
-import 'package:app/ui/profile_page.dart';
+import 'package:app/ui/auth/auth_page.dart';
+import 'package:app/ui/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app/constants/strings.dart';
 import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/services/database_helper.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final dbHelper = DatabaseHelper();
+  await dbHelper.connect();
+  runApp(MyApp(
+    dbHelper: dbHelper,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final DatabaseHelper dbHelper;
+
+  const MyApp({Key? key, required this.dbHelper}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,76 +30,9 @@ class MyApp extends StatelessWidget {
           seedColor: kPrimaryColor,
         ),
       ),
-      home: const MainPage(),
-    );
-  }
-}
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  int currentPage = 0;
-  List<Widget> pages = const[
-    HomePage(),
-    ExplorePage(),
-    ProfilePage(),
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        title: const Text(
-          kAppTitle,
-          style: kMediumTextStyle,
-        ),
+      home: AuthScreen(
+        dbHelper: dbHelper,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kPrimaryColor,
-        onPressed: () {
-          debugPrint('floating action button');
-        },
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: kWhiteColor,
-        onDestinationSelected: (int index){
-          setState(() {
-            currentPage = index;
-          });
-        },
-        selectedIndex: currentPage,
-        destinations:  const [
-          NavigationDestination(
-            icon: Icon(
-              Icons.home,
-              color: kPrimaryColor,
-            ),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.explore,
-              color: kPrimaryColor,
-            ),
-            label: 'Explore',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.person,
-              color: kPrimaryColor,
-            ),
-            label: 'Profile',
-          ),
-        ],
-      ),
-      body: pages[currentPage],
     );
   }
 }
