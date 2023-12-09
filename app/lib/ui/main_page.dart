@@ -5,28 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:app/constants/strings.dart';
 import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
-
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: kPrimaryColor,
-        ),
-      ),
-      home: const MainPage(),
-    );
-  }
-}
+import 'package:app/ui/add_post_page.dart';
+import 'package:app/services/database_helper.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final DatabaseHelper dbHelper;
+
+  const MainPage({Key? key, required this.dbHelper}) : super(key: key);
+
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -34,11 +20,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentPage = 0;
-  List<Widget> pages = const[
+  List<Widget> pages = const [
     HomePage(),
     ExplorePage(),
     ProfilePage(),
+    AddPostPage(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,18 +42,21 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: kPrimaryColor,
         onPressed: () {
           debugPrint('floating action button');
+          setState(() {
+            currentPage = 3;
+          });
         },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: NavigationBar(
         backgroundColor: kWhiteColor,
-        onDestinationSelected: (int index){
+        onDestinationSelected: (int index) {
           setState(() {
             currentPage = index;
           });
         },
-        selectedIndex: currentPage,
-        destinations:  const [
+        selectedIndex: currentPage % 3,
+        destinations: const [
           NavigationDestination(
             icon: Icon(
               Icons.home,

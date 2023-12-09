@@ -160,56 +160,54 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
   Future<void> registerUser() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
     final confirmPassword = _confirmpasswordController.text;
     final email = _emailController.text;
 
-    if(username == ''){
+    if (username == '') {
       setState(() {
         _errorMessage = 'Username cannot be empty';
       });
       return;
     }
-    if(email == ''){
+    if (email == '') {
       setState(() {
         _errorMessage = 'Email cannot be empty';
       });
       return;
     }
-    if(password == ''){
+    if (password == '') {
       setState(() {
         _errorMessage = 'Password cannot be empty';
       });
       return;
     }
-    if(confirmPassword == ''){
+    if (confirmPassword == '') {
       setState(() {
         _errorMessage = 'Confirm password cannot be empty';
       });
       return;
     }
-    if(password != confirmPassword){
+    if (password != confirmPassword) {
       setState(() {
         _errorMessage = 'Passwords do not match';
       });
       return;
     }
-    if(!isValidEmail(email)){
+    if (!isValidEmail(email)) {
       setState(() {
         _errorMessage = 'Invalid email';
       });
       return;
     }
-    if(_selectedRole == ''){
+    if (_selectedRole == '') {
       setState(() {
         _errorMessage = 'Please select a role';
       });
       return;
     }
-
 
     int role;
     if (_selectedRole == 'Volunteer') {
@@ -222,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'SELECT * FROM users WHERE username = \'$username\'',
     );
 
-    if(checkUsername.isNotEmpty){
+    if (checkUsername.isNotEmpty) {
       setState(() {
         _errorMessage = 'Username already exists';
       });
@@ -248,7 +246,9 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPage(), // Replace MainPage with the actual widget for your main page
+          builder: (context) => MainPage(
+            dbHelper: widget.dbHelper,
+          ), // Replace MainPage with the actual widget for your main page
         ),
       );
     } else {
@@ -261,7 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool isValidEmail(String email) {
     return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(email);
   }
 }
