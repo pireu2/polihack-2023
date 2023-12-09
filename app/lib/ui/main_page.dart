@@ -7,12 +7,13 @@ import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/ui/add_post_page.dart';
 import 'package:app/services/database_helper.dart';
+import 'package:app/user.dart';
+import 'package:app/main.dart';
 
 class MainPage extends StatefulWidget {
   final DatabaseHelper dbHelper;
 
   const MainPage({Key? key, required this.dbHelper}) : super(key: key);
-
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -20,12 +21,22 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentPage = 0;
-  List<Widget> pages = const [
-    HomePage(),
-    ExplorePage(),
-    ProfilePage(),
-    AddPostPage(),
-  ];
+  late PageController _pageController;
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: currentPage);
+    pages = [
+      const HomePage(),
+      const ExplorePage(),
+      const ProfilePage(),
+      AddPostPage(
+        dbHelper: widget.dbHelper,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,23 +48,45 @@ class _MainPageState extends State<MainPage> {
           kAppTitle,
           style: kMediumTextStyle,
         ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              loggedInUser = '';
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyApp(
+                    dbHelper: widget.dbHelper,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: kBlackColor,
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kPrimaryColor,
-        onPressed: () {
-          debugPrint('floating action button');
-          setState(() {
-            currentPage = 3;
-          });
+      floatingActionButton: FutureBuilder<Widget?>(
+        future: getAddButton(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          } else {
+            return const SizedBox();
+          }
         },
-        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: NavigationBar(
         backgroundColor: kWhiteColor,
         onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         selectedIndex: currentPage % 3,
         destinations: const [
@@ -80,7 +113,39 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: pages[currentPage],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            currentPage = index;
+          });
+        },
+        children: pages,
+      ),
+    );
+  }
+
+  Future<Widget?> getAddButton() async {
+    final List<List<dynamic>> result = await widget.dbHelper.executeQuery(
+      'SELECT * FROM users WHERE username = \'$loggedInUser\'',
+    );
+
+    if (result.isNotEmpty && result[0].isNotEmpty) {
+      if (result[0][4] == 0) {
+        return null;
+      }
+    }
+    return FloatingActionButton(
+      backgroundColor: kPrimaryColor,
+      onPressed: () {
+        debugPrint('floating action button');
+        _pageController.animateToPage(
+          3,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      },
+      child: const Icon(Icons.add),
     );
   }
 }

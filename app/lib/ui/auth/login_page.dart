@@ -4,6 +4,7 @@ import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/ui/main_page.dart';
 import '../../services/database_helper.dart';
+import 'package:app/user.dart';
 
 class LoginPage extends StatefulWidget {
   final DatabaseHelper dbHelper;
@@ -119,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (result.isNotEmpty) {
+      loggedInUser = username;
       // Successful login, navigate to the next screen or perform any other action
       debugPrint('Login successful');
       Navigator.pushReplacement(

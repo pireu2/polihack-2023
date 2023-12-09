@@ -1,3 +1,4 @@
+import 'package:app/user.dart';
 import 'package:flutter/material.dart';
 import 'package:app/constants/strings.dart';
 import 'package:app/constants/styles.dart';
@@ -243,6 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (result != -1) {
       // Successful registration, handle accordingly
+      loggedInUser = username;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

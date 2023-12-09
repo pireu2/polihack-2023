@@ -26,18 +26,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late List<Widget> pages;
-
-  @override
-  void initState() {
-    super.initState();
-    pages = [
-      MainPage(dbHelper: widget.dbHelper),
-      AuthScreen(dbHelper: widget.dbHelper),
-    ];
-  }
   @override
   Widget build(BuildContext context) {
+    final PageController pageController = PageController(initialPage: 0);
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -46,7 +39,14 @@ class _MyAppState extends State<MyApp> {
           seedColor: kPrimaryColor,
         ),
       ),
-      home: pages[1],
+      home: PageView(
+        controller: pageController,
+        children: [
+          AuthScreen(dbHelper: widget.dbHelper),
+          MainPage(dbHelper: widget.dbHelper),
+        ],
+      ),
+
     );
   }
 }
