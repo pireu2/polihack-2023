@@ -100,13 +100,13 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
 
-    if(username == ''){
+    if (username == '') {
       setState(() {
         _errorMessage = 'Username cannot be empty';
       });
       return;
     }
-    if(password == ''){
+    if (password == '') {
       setState(() {
         _errorMessage = 'Password cannot be empty';
       });
@@ -124,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPage(), // Replace MainPage with the actual widget for your main page
+          builder: (context) => MainPage(
+            dbHelper: widget.dbHelper,
+          ), // Replace MainPage with the actual widget for your main page
         ),
       );
     } else {

@@ -15,11 +15,27 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final DatabaseHelper dbHelper;
+
 
   const MyApp({Key? key, required this.dbHelper}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      MainPage(dbHelper: widget.dbHelper),
+      AuthScreen(dbHelper: widget.dbHelper),
+    ];
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,9 +46,8 @@ class MyApp extends StatelessWidget {
           seedColor: kPrimaryColor,
         ),
       ),
-      home: AuthScreen(
-        dbHelper: dbHelper,
-      ),
+      home: pages[1],
     );
   }
 }
+
