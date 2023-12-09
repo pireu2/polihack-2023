@@ -3,6 +3,9 @@ import 'package:app/constants/strings.dart';
 import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
 
+import '../auth/login_page.dart';
+import '../auth/register_page.dart';
+
 import '../../services/database_helper.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -15,109 +18,80 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-
-  late DatabaseHelper _databaseHelper; // Declare an instance of DatabaseHelper
+  int currentPage = 0;
+  late List<Widget> pages;
 
   @override
   void initState() {
     super.initState();
-    _databaseHelper = DatabaseHelper();
+    pages = [
+      LoginPage(dbHelper: widget.dbHelper),
+      RegisterPage(dbHelper: widget.dbHelper),
+    ];
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhiteColor,
       appBar: AppBar(
-        title: const Text('User Authentication'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                // Handle login button click
-                loginUser();
-              },
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                // Handle register button click
-                registerUser();
-              },
-              child: const Text('Register'),
-            ),
-          ],
+        title: const Text(
+          'User Authentication',
+          style: kBoldTextStyle,
         ),
+        backgroundColor: kPrimaryColor,
+      ),
+      body: pages[currentPage],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: getPage(currentPage),
       ),
     );
   }
 
-  Future<void> loginUser() async {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-
-    // Use the DatabaseHelper to execute queries
-    final result = await widget.dbHelper.executeQuery(
-      'SELECT * FROM users WHERE username = \'$username\' AND password = \'$password\'',
-    );
-
-    if (result.isNotEmpty) {
-      // Successful login, navigate to the next screen or perform any other action
-      debugPrint('Login successful');
-    } else {
-      // Handle failed login (show an error message, etc.)
-      debugPrint('Invalid credentials');
+  Widget? getPage(int index){
+    if(index == 0){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Don\'t have an account? ',
+            style: kSmallTextStyle,
+            textAlign: TextAlign.center,
+          ),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  currentPage = 1;
+                });
+              },
+              child: const Text(
+                'Register',
+                style: kSmallBlueUnderlinedTextStyle,
+              ))
+        ],
+      );
     }
-  }
-
-  Future<void> registerUser() async {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-    final email = _emailController.text;
-
-    String insertQuery =
-        'INSERT INTO users (username, password, email) VALUES (@username, @password, @email)';
-    Map<String, dynamic> insertValues = {
-      'username': username,
-      'password': password,
-      'email': email,
-    };
-    // Use the DatabaseHelper to execute an INSERT query
-    final int result = await widget.dbHelper.executeInsert(
-      insertQuery,
-      insertValues,
-    );
-
-    if (result != -1) {
-      // Successful registration, handle accordingly
-      debugPrint('Registration successful');
-    } else {
-      // Handle failed registration (show an error message, etc.)
-      debugPrint('Registration failed');
+    else{
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Have and account? ',
+            style: kSmallTextStyle,
+            textAlign: TextAlign.center,
+          ),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  currentPage = 0;
+                });
+              },
+              child: const Text(
+                'Login',
+                style: kSmallBlueUnderlinedTextStyle,
+              ))
+        ],
+      );
     }
   }
 }

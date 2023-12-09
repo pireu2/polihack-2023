@@ -42,7 +42,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kWhiteColor,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: const Text(
