@@ -58,6 +58,12 @@ const kMediumTextStyle = TextStyle(
   fontWeight: FontWeight.w700,
   fontFamily: 'Montserrat',
 );
+const kBigWhiteTextStyle = TextStyle(
+  fontSize: 36,
+  color: kWhiteColor,
+  fontWeight: FontWeight.w700,
+  fontFamily: 'Montserrat',
+);
 const kMediumBlueTextStyle = TextStyle(
   fontSize: 24,
   color: kPrimaryColor,

@@ -5,6 +5,7 @@ import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/services/database_helper.dart';
 import 'package:app/user.dart';
+import 'dart:math';
 
 
 class ExplorePage extends StatefulWidget {
@@ -39,14 +40,10 @@ class _ExplorePageState extends State<ExplorePage> {
                 itemBuilder: (context, index) {
                   return Card(
                     color: kWhiteColor,
-                    // child: ListTile(
-                    //   title: Text(snapshot.data![index][1].toString()),
-                    //   subtitle: Text(snapshot.data![index][2].toString()),
-                    // ),
                     child: ListTile(
-                      leading: const CircleAvatar(
+                      leading: CircleAvatar(
                         backgroundImage:
-                        NetworkImage('https://picsum.photos/200/300'),
+                        Image.asset('assets/images/disabled/${Random().nextInt(6) + 1}.jpg').image,
                         radius: 20,
                         backgroundColor: Colors.transparent,
                       ),
@@ -124,7 +121,7 @@ class _ExplorePageState extends State<ExplorePage> {
     String minute = dateTime.minute.toString().padLeft(2, '0');
     String second = dateTime.second.toString().padLeft(2, '0');
 
-    return '$year-$month-$day $hour:$minute:$second';
+    return '$year-$month-$day $hour:$minute';
   }
 
   Future<Widget?> getHelpButton(int postId) async {
