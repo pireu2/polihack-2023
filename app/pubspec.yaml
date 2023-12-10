@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  carousel_slider: ^4.2.1
   path: ^1.8.3
   postgres: ^2.4.0
   flutter_test:
@@ -77,6 +78,27 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  assets:
+    - assets/images/volunteers/1.jpg
+    - assets/images/volunteers/2.jpg
+    - assets/images/volunteers/3.jpg
+    - assets/images/volunteers/4.jpg
+    - assets/images/volunteers/5.jpg
+    - assets/images/volunteers/6.jpg
+    - assets/images/volunteers/7.jpg
+    - assets/images/volunteers/8.jpg
+    - assets/images/volunteers/9.jpg
+    - assets/images/disabled/1.jpg
+    - assets/images/disabled/2.jpg
+    - assets/images/disabled/3.jpg
+    - assets/images/disabled/4.jpg
+    - assets/images/disabled/5.jpg
+    - assets/images/disabled/6.jpg
+    - assets/images/events/1.jpg
+    - assets/images/events/2.jpg
+    - assets/images/events/3.jpg
+
+
   fonts:
     - family: Montserrat
       fonts:

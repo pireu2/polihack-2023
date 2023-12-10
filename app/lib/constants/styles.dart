@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:app/constants/colors.dart';
 
+
+const kSmallWhiteTextStyle = TextStyle(
+  fontSize: 12,
+  color: kWhiteColor,
+  fontWeight: FontWeight.w500,
+  fontFamily: 'Montserrat',
+);
 const kSmallMediumTextStyle = TextStyle(
   fontSize: 16,
   color: kTextColor,
