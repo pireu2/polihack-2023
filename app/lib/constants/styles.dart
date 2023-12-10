@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:app/constants/colors.dart';
 
+const kSmallMediumTextStyle = TextStyle(
+  fontSize: 16,
+  color: kTextColor,
+  fontWeight: FontWeight.w700,
+  fontFamily: 'Montserrat',
+);
+const kSmallGreyTextStyle = TextStyle(
+  fontSize: 16,
+  color: kGreyColor,
+  fontWeight: FontWeight.w500,
+  fontFamily: 'Montserrat',
+);
 const kSmallTextStyle = TextStyle(
   fontSize: 16,
   color: kTextColor,
@@ -58,8 +70,4 @@ const kBigBoldTextStyle = TextStyle(
   fontFamily: 'Montserrat',
 );
 
-const kCircleBoxDecoration =
-    BoxDecoration(shape: BoxShape.circle, color: kGreyColor);
-const kSmallPaddingAll = EdgeInsets.all(8);
-const kMediumPaddingAll = EdgeInsets.all(16);
-const kBigPaddingAll = EdgeInsets.all(32);
+

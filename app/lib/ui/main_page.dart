@@ -29,9 +29,15 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _pageController = PageController(initialPage: currentPage);
     pages = [
-      const HomePage(),
-      const ExplorePage(),
-      const ProfilePage(),
+      HomePage(
+        dbHelper: widget.dbHelper,
+      ),
+      ExplorePage(
+        dbHelper: widget.dbHelper,
+      ),
+      ProfilePage(
+        dbHelper: widget.dbHelper,
+      ),
       AddPostPage(
         dbHelper: widget.dbHelper,
       ),
