@@ -132,11 +132,12 @@ class _AddPostPageState extends State<AddPostPage> {
 
       // Now you can use the userId in your insertQuery
       String insertQuery =
-          'INSERT INTO posts (title, description, author_id) VALUES (@title, @description, @author_id)';
+          'INSERT INTO posts (title, description, author_id, created_at) VALUES (@title, @description, @author_id, @created_at)';
       Map<String, dynamic> insertValues = {
         'title': title,
         'description': description,
-        'author_id': userId
+        'author_id': userId,
+        'created_at': DateTime.now().toUtc().toString()
       };
       final int queryResult = await widget.dbHelper.executeInsert(
         insertQuery,

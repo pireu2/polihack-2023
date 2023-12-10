@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:app/constants/strings.dart';
 import 'package:app/constants/styles.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/services/database_helper.dart';
 
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final DatabaseHelper dbHelper;
+
+  const HomePage({Key? key, required this.dbHelper}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
